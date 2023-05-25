@@ -4,6 +4,7 @@ const layouts = require('express-ejs-layouts');
 const app = express();
 const session = require('express-session');
 const flash = require('connect-flash');
+const passport = require('./config/ppConfig');
 
 
 // environemnt variables
@@ -26,6 +27,8 @@ app.use(session({
 }));
 
 // add passport
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use((req, res, next) => {
   console.log(res.locals);
