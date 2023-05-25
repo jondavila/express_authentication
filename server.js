@@ -5,6 +5,7 @@ const app = express();
 const session = require('express-session');
 const flash = require('connect-flash');
 const passport = require('./config/ppConfig');
+const isLoggedIn = require('./middleware/isLoggedIn');
 
 
 // environemnt variables
@@ -42,6 +43,12 @@ app.get('/', (req, res) => {
 })
 
 app.use('/auth', require('./controllers/auth'));
+
+// Add this above /auth controllers
+app.get('/profile', isLoggedIn, (req, res) => {
+  const { id, name, email } = req.user.get(); 
+  res.render('profile', { id, name, email });
+});
 
 const PORT = process.env.PORT || 3000;
 const server = app.listen(PORT, () => {
